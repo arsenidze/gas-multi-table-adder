@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Form } from "react-bootstrap";
+import { Alert, Button, Form } from "react-bootstrap";
 import { useTemplateUsingApi } from "../api";
 
 export const UseTemplate = ({template}) => {
@@ -7,18 +7,23 @@ export const UseTemplate = ({template}) => {
     return null;
   }
   const [fieldValues, setFieldValues] = useState(new Array(template.fieldNames.length).fill(''));
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const [validated, setValidated] = useState(false);
 
   const handleValuesInsert = async () => {
     const { error: responseError } = await useTemplateUsingApi(template, fieldValues);
     if (responseError) {
-      setError(responseError);
+      setMessage(`Помилка: ${responseError}`);
       return;
     }
+    setMessage(`Дані були додані до ${template.spreadSheets.length} таблиць`);
+
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
 
@@ -26,7 +31,8 @@ export const UseTemplate = ({template}) => {
       // Form is valid, handle submission logic
       console.log('Form is valid');
       // ... additional logic
-      handleValuesInsert();
+      await handleValuesInsert();
+      setFieldValues(new Array(template.fieldNames.length).fill(''));
     } else {
       // Form is invalid, display validation errors
       console.log('Form is invalid');
@@ -55,8 +61,7 @@ export const UseTemplate = ({template}) => {
           </Form.Control.Feedback>
         </Form.Group>
       ))}
-
-      {error && <p>{error}</p>}
+      {message && <Alert variant={message.includes('Помилка') ? 'danger' : 'success'}>{message}</Alert>}
 
       <Button variant="success" type="submit" className="mt-3 ms-auto">
         Додати
