@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Stack } from 'react-bootstrap';
 import { TemplatesView } from "./components/TemplatesView";
-import { GASClient } from 'gas-client';
-const { serverFunctions } = new GASClient();
+import { fetchTemplatesUsingApi, updateTemplatesUsingApi } from "./api";
 
 const config = {
   ERROR_MSGS: {
@@ -19,10 +18,7 @@ export const App = () => {
   const [templates, setTemplates] = useState([]);
 
   const fetchTemplates = async () => {
-    // const templates = await fetch('http://localhost:3000/data').then((res) => res.json());
-
-    const { data: templates, error } = await serverFunctions.getTemplatesFromProperties();
-
+    const { data: templates, error } = await fetchTemplatesUsingApi();
     if (error) {
       console.error(error);
       return;
@@ -33,17 +29,7 @@ export const App = () => {
 
   const updateTemplates = async (templates) => {
     console.log(templates);
-    
-    // fetch('http://localhost:3000/data', {
-    //   method: 'POST',
-    //   body: JSON.stringify(templates)
-    // });
-
-    const { error } = await serverFunctions.setTemplatesToScriptProperties(templates);
-    if (error) {
-      console.error(error);
-      return;
-    }
+    updateTemplatesUsingApi(templates);
   }
 
   useEffect(() => {

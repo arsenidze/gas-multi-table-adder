@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
-import { GASClient } from 'gas-client';
-const { serverFunctions } = new GASClient();
+import { getSpreadsheetInfoUsingApi } from '../api';
 
 export const SpreadsheetsList = ({
   title,
@@ -27,7 +26,7 @@ export const SpreadsheetsList = ({
       return;
     }
 
-    const ssInfo = await serverFunctions.getSpreadsheetInfo(inputValue);
+    const ssInfo = await getSpreadsheetInfoUsingApi(inputValue);
     if (ssInfo.error) {
       setError(ssInfo.error);
       return;

@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Button, Form } from "react-bootstrap";
-import { GASClient } from 'gas-client';
-const { serverFunctions } = new GASClient();
+import { useTemplateUsingApi } from "../api";
 
 export const UseTemplate = ({template}) => {
   if (!template) {
@@ -12,7 +11,7 @@ export const UseTemplate = ({template}) => {
   const [validated, setValidated] = useState(false);
 
   const handleValuesInsert = async () => {
-    const { error: responseError } = await serverFunctions.useTemplate(template, fieldValues);
+    const { error: responseError } = await useTemplateUsingApi(template, fieldValues);
     if (responseError) {
       setError(responseError);
       return;
