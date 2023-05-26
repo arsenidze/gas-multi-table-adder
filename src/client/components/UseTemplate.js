@@ -32,6 +32,7 @@ export const UseTemplate = ({template}) => {
       console.log('Form is valid');
       // ... additional logic
       await handleValuesInsert();
+      setValidated(false);
       setFieldValues(new Array(template.fieldNames.length).fill(''));
     } else {
       // Form is invalid, display validation errors
