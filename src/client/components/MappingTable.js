@@ -6,13 +6,14 @@ export const MappingTable = ({ title, rows, columns, allowedValuesPerCol, cells,
   }
   console.log(cells);
   const handleCellValueChange = (rowIndex, columnIndex, newValue) => {
-    const updatedRow = cells[rowIndex].map((colValue, i) => i === columnIndex ? newValue : colValue);
-    const updatedCells = cells.map((rowValue, i) => i === rowIndex ? updatedRow : rowValue);
+    const updatedRow = cells[columnIndex].map((colValue, i) => i === rowIndex ? newValue : colValue);
+    const updatedCells = cells.map((rowValue, i) => i === columnIndex ? updatedRow : rowValue);
     setCells(updatedCells);
   };
 
   const renderDropdown = (rowIndex, columnIndex) => {
-    const selectedValue = cells[rowIndex][columnIndex] || '';
+    // We display an inverted table, so when we access cell value we need to switch row-col indexes
+    const selectedValue = cells[columnIndex][rowIndex] || '';
     return (
       <select
         value={selectedValue}
