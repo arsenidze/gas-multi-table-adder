@@ -85,24 +85,9 @@ export const TemplatesView = ({
   }
 
   const isTemplateCanBeUsed = (template) => {
-    if (!template.mapping || !template.mapping.length) {
-      return false;
-    }
-    for (let i = 0; i < template.mapping[0].length; i++) {
-      let isValidMapping = false;
-      for (let j = 0; j < template.mapping.length; j++) {
-        if (template.mapping[j][i]) {
-          isValidMapping = true;
-          continue;
-        }
-      }
-      if (!isValidMapping) {
-        return false;
-      }
-    }
     return template.fieldNames.length !== 0 &&
-      template.spreadSheets.length !== 0
-      // !template.mapping.some((m) => m.some((v) => !v));
+      template.spreadSheets.length !== 0 &&
+      template.mapping.every((m) => m.some((v) => !!v))
   }
 
   return (
@@ -154,7 +139,7 @@ export const TemplatesView = ({
           <Modal.Title>Додати нові дані</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UseTemplate template={selectedTemplate} />
+          <UseTemplate template={selectedTemplate}/>
         </Modal.Body>
         {/* <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseOfUseModal}>
