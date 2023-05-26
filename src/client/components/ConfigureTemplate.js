@@ -28,6 +28,22 @@ export const ConfigureTemplate = ({
     setTemplate((prevState) => ({...prevState, ...values}));
   }
 
+  const addNewSpreadsheetToMapping = () => {
+    setTemplate((prevState) => ({ ...prevState, mapping: [...prevState.mapping, new Array(prevState.fieldNames.length).fill(EMPTY_MAPPING)] }));
+  }
+
+  const removeSpreadsheetFromMapping = (spreadsheetIdx) => {
+    setTemplate((prevState) => ({...prevState, mapping: prevState.mapping.filter((row, idx) => idx !== spreadsheetIdx)}));
+  }
+
+  const addFieldToMapping = () => {
+    setTemplate((prevState) => ({...prevState, mapping: prevState.mapping.map((row) => [...row, EMPTY_MAPPING])}));
+  }
+
+  const removeFieldFromMapping = (fieldIdx) => {
+    setTemplate((prevState) => ({...prevState, mapping: prevState.mapping.map((row) => row.filter((_, idx) => idx !== fieldIdx))}));
+  }
+
   return (
     <Stack gap={3} className="mx-auto p-3"  >
       <div className="template-name">
@@ -40,10 +56,10 @@ export const ConfigureTemplate = ({
         listValues={template.spreadSheets}
         setListValues={(newListValues) => updateTemplateWithValues({ spreadSheets: newListValues })}
         afterAdd={
-          (value, addedItemIdx) => updateTemplateWithValues({mapping: template.mapping.map((row) => [...row, EMPTY_MAPPING])})
+          (value, addedItemIdx) => addNewSpreadsheetToMapping()
         }
         afterRemove={
-          (value, removedItemIdx) => updateTemplateWithValues({mapping: template.mapping.map((row) => row.filter((_, idx) => idx !== removedItemIdx))})
+          (value, removedItemIdx) => removeSpreadsheetFromMapping()
         }
         config={config}
       />
@@ -53,10 +69,10 @@ export const ConfigureTemplate = ({
         listValues={template.fieldNames}
         setListValues={(newListValues) => updateTemplateWithValues({ fieldNames: newListValues })}
         afterAdd={
-          (value, addedItemIdx) => updateTemplateWithValues({mapping: [...template.mapping, new Array(template.spreadSheets.length).fill(EMPTY_MAPPING)]})
+          (value, addedItemIdx) => addFieldToMapping()
         }
         afterRemove={
-          (value, removedItemIdx) => updateTemplateWithValues({mapping: template.mapping.filter((row, idx) => idx !== removedItemIdx)})
+          (value, removedItemIdx) => removeFieldFromMapping()
         }
         config={config}
       />
