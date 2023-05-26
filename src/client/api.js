@@ -42,7 +42,7 @@ export const getSpreadsheetInfoUsingApi = async (inputValue) => {
   return serverFunctions.getSpreadsheetInfo(inputValue);
 }
 
-export const useTemplateUsingApi = async () => {
+export const useTemplateUsingApi = async (template, fieldValues) => {
   if (isDev) {
     return { data: true, error: undefined };
   }
