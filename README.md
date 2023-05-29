@@ -23,6 +23,10 @@ A user can have several fillable templates.
 
 
 
+## Useful links
+
+- how to publish add-on: https://tidisventures.com/blog/a-complete-guide-to-publishing-a-google-workspace-add-on-google-app-script
+
 ## webpack
 
 This project uses webpack in order to bundle multiply .js files in a single file. 
