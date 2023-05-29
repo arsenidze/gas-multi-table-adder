@@ -99,8 +99,13 @@ function getSpreadsheetInfo(url) {
   }
 }
 
+function createLinkToRow(rowIndex, ssUrl) {
+  return `${ssUrl}&range=${rowIndex}:${rowIndex}`;
+}
+
 function useTemplate(template, fieldValues) {
   try {
+    const insertedRowLinks = [];
     for (let index = 0; index < template.spreadSheets.length; index++) {
       const spreadSheetInfo = template.spreadSheets[index];
       const mapping = template.mapping[index];
@@ -123,9 +128,10 @@ function useTemplate(template, fieldValues) {
       Logger.log(newValues);
 
       sheet.appendRow(newValues);
+      insertedRowLinks.push(createLinkToRow(sheet.getLastRow(), spreadSheetInfo.url))
     }
   
-    return { data: true, error: undefined };
+    return { data: insertedRowLinks, error: undefined };
   } catch (err) {
     Logger.log(err.message);
     return { data: undefined, error: err.message };

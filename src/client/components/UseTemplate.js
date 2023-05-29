@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Alert, Button, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Form, ListGroup, Spinner } from "react-bootstrap";
 import { useTemplateUsingApi } from "../api";
 
 export const UseTemplate = ({template}) => {
@@ -10,20 +10,23 @@ export const UseTemplate = ({template}) => {
   const [message, setMessage] = useState('');
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [rowLinks, setRowLinks] = useState([]);
 
   const handleValuesInsert = async () => {
     setIsLoading(true);
-    const { error: responseError } = await useTemplateUsingApi(template, fieldValues);
+    const { data: insertedRowLinks, error: responseError } = await useTemplateUsingApi(template, fieldValues);
     setIsLoading(false);
     if (responseError) {
       setMessage(`Помилка: ${responseError}`);
       return;
     }
+    setRowLinks(insertedRowLinks);
     setMessage(`Дані були додані до ${template.spreadSheets.length} таблиць`);
 
     setTimeout(() => {
       setMessage('');
-    }, 3000);
+      setRowLinks([]);
+    }, 20000);
   }
 
   const handleSubmit = async (event) => {
@@ -72,6 +75,21 @@ export const UseTemplate = ({template}) => {
           className="mt-3"
         >
           {message}
+          {rowLinks.length !== 0 && 
+            <ListGroup as="ol" numbered variant="flush">
+              {rowLinks.map((rowLink, index) => (
+                <ListGroup.Item as="li" key={index} className="d-flex align-items-center">
+                  <span>
+                    Новий
+                    <a href={rowLink} target="_blank" referrerPolicy="no-referrer">
+                      <span>рядок</span>
+                    </a>
+                    в таблиці: {template.spreadSheets[index].name} | {template.spreadSheets[index].sheetName}
+                  </span>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          }
         </Alert>
       }
       <Button
