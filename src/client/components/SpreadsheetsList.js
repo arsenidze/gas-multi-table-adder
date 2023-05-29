@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
+import { Button, Form, ListGroup, Spinner, Stack } from 'react-bootstrap';
 import { getSpreadsheetInfoUsingApi } from '../api';
 
 export const SpreadsheetsList = ({
@@ -13,6 +13,7 @@ export const SpreadsheetsList = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddValue = async () => {
     console.log(listValues);
@@ -26,7 +27,9 @@ export const SpreadsheetsList = ({
       return;
     }
 
+    setIsLoading(true);
     const ssInfo = await getSpreadsheetInfoUsingApi(inputValue);
+    setIsLoading(false);
     if (ssInfo.error) {
       setError(ssInfo.error);
       return;
@@ -93,12 +96,26 @@ export const SpreadsheetsList = ({
                 handleAddValue();
               }
             }}
+            disabled={isLoading}
           />
           <Form.Control.Feedback type="invalid">
             {error}
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" onClick={handleAddValue} className="mt-3">
+        <Button
+          variant="primary"
+          onClick={handleAddValue}
+          className="mt-3"
+          disabled={isLoading}
+        >
+          {isLoading && <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="me-1"
+          />}
           {config.ACTION_MSGS.ADD_VALUE}
         </Button>
       </Form>

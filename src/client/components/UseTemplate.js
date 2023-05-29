@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Alert, Button, Form } from "react-bootstrap";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import { useTemplateUsingApi } from "../api";
 
 export const UseTemplate = ({template}) => {
@@ -9,9 +9,12 @@ export const UseTemplate = ({template}) => {
   const [fieldValues, setFieldValues] = useState(new Array(template.fieldNames.length).fill(''));
   const [message, setMessage] = useState('');
   const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleValuesInsert = async () => {
+    setIsLoading(true);
     const { error: responseError } = await useTemplateUsingApi(template, fieldValues);
+    setIsLoading(false);
     if (responseError) {
       setMessage(`Помилка: ${responseError}`);
       return;
@@ -56,15 +59,35 @@ export const UseTemplate = ({template}) => {
               fieldValuesCopy[fieldIndex] = e.target.value;
               setFieldValues(fieldValuesCopy);
             }}
+            disabled={isLoading}
           />
           <Form.Control.Feedback type="invalid">
             Значення обов'язкове
           </Form.Control.Feedback>
         </Form.Group>
       ))}
-      {message && <Alert variant={message.includes('Помилка') ? 'danger' : 'success'}>{message}</Alert>}
-
-      <Button variant="success" type="submit" className="mt-3 ms-auto">
+      {message && 
+        <Alert 
+          variant={message.includes('Помилка') ? 'danger' : 'success'}
+          className="mt-3"
+        >
+          {message}
+        </Alert>
+      }
+      <Button
+        variant="success"
+        type="submit"
+        className="mt-3 ms-auto"
+        disabled={isLoading}
+      >
+        {isLoading && <Spinner
+          as="span"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+          className="me-1"
+        />}
         Додати
       </Button>
     </Form>
