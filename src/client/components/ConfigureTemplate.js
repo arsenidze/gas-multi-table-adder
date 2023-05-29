@@ -59,7 +59,7 @@ export const ConfigureTemplate = ({
           (value, addedItemIdx) => addNewSpreadsheetToMapping()
         }
         afterRemove={
-          (value, removedItemIdx) => removeSpreadsheetFromMapping()
+          (value, removedItemIdx) => removeSpreadsheetFromMapping(removedItemIdx)
         }
         config={config}
       />
@@ -72,7 +72,7 @@ export const ConfigureTemplate = ({
           (value, addedItemIdx) => addFieldToMapping()
         }
         afterRemove={
-          (value, removedItemIdx) => removeFieldFromMapping()
+          (value, removedItemIdx) => removeFieldFromMapping(removedItemIdx)
         }
         config={config}
       />
