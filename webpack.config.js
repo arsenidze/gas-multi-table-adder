@@ -5,8 +5,7 @@ const HtmlWebpackInlineSourcePlugin = require('@effortlessmotion/html-webpack-in
 const GasPlugin = require('gas-webpack-plugin');
 
 const IS_DEV = process.env.NODE_ENV === 'development';
-// const IS_PROD = process.env.NODE_ENV === 'production';
-const IS_PROD = true;
+const IS_PROD = process.env.NODE_ENV === 'production';
 
 const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = path.join(__dirname, 'dist');
@@ -17,7 +16,7 @@ const SERVER_ENTRY = path.join(SERVER_DIR, 'index.js');
 
 const clientConfig = {
   mode: process.env.NODE_ENV || 'development',
-  devtool: 'inline-source-map',
+  devtool: IS_PROD ? undefined : 'inline-source-map',
   entry: CLIENT_ENTRY,
   output: {
     filename: 'client.js',

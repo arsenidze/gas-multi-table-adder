@@ -4,7 +4,7 @@
   "description": "",
   "main": "ValuesList.js",
   "scripts": {
-    "build": "rimraf ./dist && cross-env NODE_ENV=development webpack",
+    "build": "rimraf ./dist && cross-env NODE_ENV=production webpack",
     "serve": "cross-env NODE_ENV=development webpack serve",
     "redeploy": "npm run build && npx clasp push"
   },
