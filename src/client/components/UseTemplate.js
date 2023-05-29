@@ -23,15 +23,17 @@ export const UseTemplate = ({template}) => {
     setRowLinks(insertedRowLinks);
     setMessage(`Дані були додані до ${template.spreadSheets.length} таблиць`);
 
-    setTimeout(() => {
-      setMessage('');
-      setRowLinks([]);
-    }, 20000);
+    // setTimeout(() => {
+    //   setMessage('');
+    //   setRowLinks([]);
+    // }, 20000);
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
+
+    setMessage('');
 
     if (form.checkValidity()) {
       // Form is valid, handle submission logic
@@ -73,23 +75,30 @@ export const UseTemplate = ({template}) => {
         <Alert 
           variant={message.includes('Помилка') ? 'danger' : 'success'}
           className="mt-3"
+          onClose={() => setMessage('')}
+          dismissible
         >
           {message}
-          {rowLinks.length !== 0 && 
-            <ListGroup as="ol" numbered variant="flush">
-              {rowLinks.map((rowLink, index) => (
-                <ListGroup.Item as="li" key={index} className="d-flex align-items-center">
-                  <span>
-                    Новий
-                    <a href={rowLink} target="_blank" referrerPolicy="no-referrer">
-                      <span>рядок</span>
-                    </a>
-                    в таблиці: {template.spreadSheets[index].name} | {template.spreadSheets[index].sheetName}
-                  </span>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          }
+          <br />
+          <br />
+          {rowLinks.length !== 0 && (
+            <>
+              <span>Посилання на нові рядки:</span>
+              <ListGroup as="ol" numbered variant="flush">
+                {rowLinks.map((rowLink, index) => (
+                  <ListGroup.Item as="li" key={index} className="d-flex align-items-center" variant="success">
+                    <span>
+                      {'Новий '}
+                      <a href={rowLink} target="_blank" referrerPolicy="no-referrer">
+                        <span>рядок</span>
+                      </a>
+                      {` в таблиці: ${template.spreadSheets[index].name} | ${template.spreadSheets[index].sheetName}`}
+                    </span>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </>
+          )}
         </Alert>
       }
       <Button
