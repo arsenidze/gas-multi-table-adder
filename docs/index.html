@@ -1,0 +1,13 @@
+<h1 id="multi-table-adder">Multi table adder</h1>
+<h2 id="overview">Overview</h2>
+<p>The project contains google apps script that allows adding data to multiple google spreadsheets at once.  </p>
+<h2 id="usage-flow">Usage flow</h2>
+<p>At first, a user has to create a fillable template.
+The fillable template contains the following elements:</p>
+<ul>
+<li>A list of spreadsheets to fill; the user specifies a spreadsheet and a sheet inside this spreadsheet using the spreadsheet&#39;s URL.</li>
+<li>A list of fields that should be added to spreadsheets.</li>
+<li>A mapping between columns of each spreadsheet and the fields; some fields can only be mapped to columns of a subset of spreadsheets.</li>
+</ul>
+<p>Once the fillable template is ready, the user can utilize it.<br>Using the template involves providing values to the fields specified in the template.<br>When values are provided and the user presses the apply button, the values are added to the corresponding columns of the respective spreadsheets.</p>
+<p>A user can have several fillable templates.</p>
