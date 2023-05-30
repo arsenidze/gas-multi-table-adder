@@ -7,6 +7,10 @@ const config = {
   MULTI_TABLE_ADDER_TEMPLATES_KEY: 'MULTI_TABLE_ADDER_TEMPLATES_KEY'
 };
 
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile(config.MULTI_TABLE_ADDER_HTML_PAGE_NAME);
+}
+
 function onOpen() {
   SpreadsheetApp.getUi().createMenu(config.CUSTOM_MENU_NAME)
     .addItem(config.MULTI_TABLE_ADDER_MENU_ITEM_NAME, 'openMultiTableAdder')
@@ -137,6 +141,7 @@ function useTemplate(template, fieldValues) {
     return { data: undefined, error: err.message };
   }
 }
+
 // export {
 //   onOpen,
 //   openMappingsSidebar,
