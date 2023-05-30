@@ -63,43 +63,48 @@ function getSheetById(ss, sheetId) {
 }
 
 function getSpreadsheetInfo(url) {
-  const regex = /\/d\/([a-zA-Z0-9-_]+)\/.*gid=([0-9]+)/;
-  const match = regex.exec(url);
-  if (match && match[1] && match[2]) {
-    const spreadsheetId = match[1];
-    const sheetId = parseInt(match[2]);
-    let spreadsheet;
-    try {
-      spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-      if (!spreadsheet) {
+  try {
+    const regex = /\/d\/([a-zA-Z0-9-_]+)\/.*gid=([0-9]+)/;
+    const match = regex.exec(url);
+    if (match && match[1] && match[2]) {
+      const spreadsheetId = match[1];
+      const sheetId = parseInt(match[2]);
+      let spreadsheet;
+      try {
+        spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+        if (!spreadsheet) {
+          return { data: undefined, error: 'Spreadsheet за таким URL не знайдено' };
+        }
+      } catch (err) {
+        Logger.log(err.message);
         return { data: undefined, error: 'Spreadsheet за таким URL не знайдено' };
       }
-    } catch (err) {
-      Logger.log(err.message);
-      return { data: undefined, error: 'Spreadsheet за таким URL не знайдено' };
+      
+      const { data: sheet, error } = getSheetById(spreadsheet, sheetId);
+      if (error) {
+        return { data: undefined, error };
+      }
+  
+      const numOfCols = sheet.getLastColumn();
+      const allowedColumnCharIndexes = new Array(numOfCols)
+        .fill(0).map((_, idx) => convertNumToCharIndex(idx));
+  
+      return {
+        data: {
+          spreadsheetName: spreadsheet.getName(),
+          sheetName: sheet.getName(),
+          spreadsheetId,
+          sheetId,
+          allowedColumnCharIndexes
+        },
+        error: undefined,
+      }
+    } else {
+      return { data: undefined, error: 'Невірний формат URL. Формат: https://docs.google.com/spreadsheets/d/.../edit#gid=...' };
     }
-    
-    const { data: sheet, error } = getSheetById(spreadsheet, sheetId);
-    if (error) {
-      return { data: undefined, error };
-    }
-
-    const numOfCols = sheet.getLastColumn();
-    const allowedColumnCharIndexes = new Array(numOfCols)
-      .fill(0).map((_, idx) => convertNumToCharIndex(idx));
-
-    return {
-      data: {
-        spreadsheetName: spreadsheet.getName(),
-        sheetName: sheet.getName(),
-        spreadsheetId,
-        sheetId,
-        allowedColumnCharIndexes
-      },
-      error: undefined,
-    }
-  } else {
-    return { data: undefined, error: 'Невірний формат URL. Формат: https://docs.google.com/spreadsheets/d/.../edit#gid=...' };
+  } catch (err) {
+    Logger.log(err.message);
+    return { data: undefined, error:  `Сталась наступна помилка: ${err.message}` };
   }
 }
 
