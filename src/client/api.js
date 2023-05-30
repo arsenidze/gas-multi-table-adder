@@ -9,7 +9,15 @@ export const fetchTemplatesUsingApi = async () => {
 
     return { data: templates, error: undefined };
   }
-  return serverFunctions.getTemplatesFromProperties();
+  try {
+    const result = await serverFunctions.getTemplatesFromProperties();
+    
+    return result;
+  } catch (err) {
+    console.error(err.message);
+
+    return { data: undefined, error: err.message };
+  }
 };
 
 export const updateTemplatesUsingApi = async (templates) => {
@@ -19,9 +27,14 @@ export const updateTemplatesUsingApi = async (templates) => {
       body: JSON.stringify(templates)
     });
   }
-  const { error } = await serverFunctions.setTemplatesToScriptProperties(templates);
-  if (error) {
-    console.error(error);
+  try {
+    const { error } = await serverFunctions.setTemplatesToScriptProperties(templates);
+    if (error) {
+      console.error(error);
+      return;
+    }
+  } catch (err) {
+    console.error(err.message);
     return;
   }
 }
@@ -39,12 +52,28 @@ export const getSpreadsheetInfoUsingApi = async (inputValue) => {
       error: undefined,
     };
   }
-  return serverFunctions.getSpreadsheetInfo(inputValue);
+  try {
+    const result = await serverFunctions.getSpreadsheetInfo(inputValue);
+    
+    return result;
+  } catch (err) {
+    console.error(err.message);
+
+    return { data: undefined, error: err.message };
+  }
 }
 
 export const useTemplateUsingApi = async (template, fieldValues) => {
   if (isDev) {
     return { data: true, error: undefined };
   }
-  return serverFunctions.useTemplate(template, fieldValues);
+  try {
+    const result = await serverFunctions.useTemplate(template, fieldValues);
+    
+    return result;
+  } catch (err) {
+    console.error(err.message);
+
+    return { data: undefined, error: err.message };
+  }
 }
