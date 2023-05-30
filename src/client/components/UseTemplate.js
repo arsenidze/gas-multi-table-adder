@@ -36,17 +36,13 @@ export const UseTemplate = ({template}) => {
     setMessage('');
 
     if (form.checkValidity()) {
-      // Form is valid, handle submission logic
       console.log('Form is valid');
-      // ... additional logic
       await handleValuesInsert();
       setValidated(false);
       setFieldValues(new Array(template.fieldNames.length).fill(''));
     } else {
-      // Form is invalid, display validation errors
       console.log('Form is invalid');
       setValidated(true)
-      // form.classList.add('was-validated');
     }
   };
 

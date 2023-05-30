@@ -28,7 +28,6 @@ export const App = () => {
   };
 
   const updateTemplates = async (templates) => {
-    console.log(templates);
     updateTemplatesUsingApi(templates);
   }
 

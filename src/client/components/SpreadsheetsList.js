@@ -16,7 +16,6 @@ export const SpreadsheetsList = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddValue = async () => {
-    console.log(listValues);
     if (inputValue.trim() === '') {
       setError(config.ERROR_MSGS.VALUE_IS_EMPTY);
       return;
@@ -43,8 +42,6 @@ export const SpreadsheetsList = ({
       sheetId: ssInfo.data.sheetId,
       allowedColumnCharIndexes: ssInfo.data.allowedColumnCharIndexes,
     }
-
-    console.log(newSs);
 
     const addedItemIdx = listValues.length;
     setListValues([...listValues, newSs]);

@@ -134,8 +134,6 @@ function useTemplate(template, fieldValues) {
         .fill(0).map((_, idx) => convertNumToCharIndex(idx)) // A, B, C, ...
         .map((charIdx) => charIndexToValueDict[charIdx] || '')
   
-      Logger.log(newValues);
-
       sheet.appendRow(newValues);
       insertedRowLinks.push(createLinkToRow(sheet.getLastRow(), spreadSheetInfo.url))
     }
