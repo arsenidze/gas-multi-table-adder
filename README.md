@@ -24,6 +24,7 @@ A user can have several fillable templates.
 
 > NOTE: In order to deploy the project as a web app, read [this](https://developers.google.com/apps-script/guides/web#deploy_a_script_as_a_web_app).  
 
+Video tutorial:  
 [![tutorial-preview](http://img.youtube.com/vi/32qEtQkes-8/0.jpg)](http://www.youtube.com/watch?v=32qEtQkes-8 "How to use Multi-Table-Adder")
 
 
