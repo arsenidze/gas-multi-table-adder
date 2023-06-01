@@ -66,7 +66,7 @@ export const SpreadsheetsList = ({
       <ListGroup as="ol" numbered variant="flush">
         {listValues.map((item, index) => (
           <ListGroup.Item as="li" key={index} className="d-flex align-items-center">
-            <a href={item.url} target="_blank" referrerPolicy="no-referrer">
+            <a href={item.url} target="_blank" rel="noreferrer">
               <span>{item.name} | {item.sheetName}</span>
             </a>
             <Button

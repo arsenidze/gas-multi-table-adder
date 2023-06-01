@@ -85,7 +85,7 @@ export const UseTemplate = ({template}) => {
                   <ListGroup.Item as="li" key={index} className="d-flex align-items-center" variant="success">
                     <span>
                       {'Новий '}
-                      <a href={rowLink} target="_blank" referrerPolicy="no-referrer">
+                      <a href={rowLink} target="_blank" rel="noreferrer">
                         <span>рядок</span>
                       </a>
                       {` в таблиці: ${template.spreadSheets[index].name} | ${template.spreadSheets[index].sheetName}`}
